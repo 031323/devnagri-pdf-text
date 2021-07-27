@@ -13,12 +13,11 @@ class Font:
             for t in re.findall(r'<Ligature components=.*/>', s):
                 self.aksrnam_dhatvh[t.split('"')[3]] = [prtmdatuh] + t.split('"')[1].split(',')
 
-        self.adesh_aksrnam = dict()
+        self.adesah = []
         for s in re.findall(r'<Substitution in=.*/>', vidih):
-            for adesh in s.split('"')[3].split(','):
-                self.adesh_aksrnam[adesh] = s.split('"')[1]
+            self.adesah.append((s.split('"')[3].split(','), s.split('"')[1]))
 
-        print([a for a in self.aksrnam_id.keys() if not a in self.aksrnam_unicode.keys() and not a in self.aksrnam_dhatvh.keys()])
+        #print([a for a in self.aksrnam_id.keys() if not a in self.aksrnam_unicode.keys() and not a in self.aksrnam_dhatvh.keys()])
 
         #self.pscimah = set([s.split('"')[1] for s in re.findall(r'<psName name=.*/>', vidih)])
 
@@ -36,7 +35,7 @@ class Font:
             return ''.join([self.id_unicode(i, prkriya) for i in idn])
 
         aksrnam = self.id_aksrnam[id]
-        
+
         if aksrnam in self.aksrnam_unicode.keys():
             if prkriya:
                 print(aksrnam)
@@ -47,9 +46,10 @@ class Font:
                 print('धात॑वः ' + aksrnam + ' > ' + ' + '.join(self.aksrnam_dhatvh[aksrnam]))
             return self.id_unicode([self.aksrnam_id[datuh] for datuh in self.aksrnam_dhatvh[aksrnam]], prkriya)
 
-        if aksrnam in self.adesh_aksrnam.keys():
-            if prkriya:
-                print('आ॒दे॒शः ' + aksrnam + ' > ' + self.adesh_aksrnam[aksrnam])
-            return self.id_unicode(self.aksrnam_id[self.adesh_aksrnam[aksrnam]], prkriya)
+        for adesh in self.adesah:
+            if len(adesh[0]) == 1 and adesh[0][0] == aksrnam:
+                if prkriya:
+                    print('आ॒दे॒शः ' + aksrnam + ' > ' + self.adesh_aksrnam[aksrnam])
+                return self.id_unicode(self.aksrnam_id[adesh[1]])
 
         return ''
