@@ -18,7 +18,7 @@ class Font:
             for t in re.findall(r'<Ligature components=.*/>', s):
                 self.aksrnam_dhatvh[t.split('"')[3]] = [prtmdatuh] + t.split('"')[1].split(',')
 
-        #print([a for a in self.aksrnam_id.keys() if not a in self.aksrnam_unicode.keys() and not a in self.aksrnam_dhatvh.keys()])
+        print([a for a in self.aksrnam_id.keys() if not a in self.aksrnam_unicode.keys() and not a in self.aksrnam_dhatvh.keys()])
 
         #self.pscimah = set([s.split('"')[1] for s in re.findall(r'<psName name=.*/>', vidih)])
 
